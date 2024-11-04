@@ -86,11 +86,13 @@ const useDocker = async (apps) => {
       if (
         'flame.name' in labels &&
         'flame.url' in labels &&
+        'flame.description' in labels &&
         /^app/.test(labels['flame.type'])
       ) {
         for (let i = 0; i < labels['flame.name'].split(';').length; i++) {
           const names = labels['flame.name'].split(';');
           const urls = labels['flame.url'].split(';');
+          const descriptions = labels['flame.description'].split(';');
           let icons = '';
 
           if ('flame.icon' in labels) {
@@ -100,6 +102,7 @@ const useDocker = async (apps) => {
           dockerApps.push({
             name: names[i] || names[0],
             url: urls[i] || urls[0],
+            description: descriptions[i] || descriptions[0],
             icon: icons[i] || 'docker',
           });
         }
@@ -125,6 +128,7 @@ const useDocker = async (apps) => {
           await app.update({
             name: item.name,
             url: item.url,
+            description: item.description,
             isPinned: true,
           });
         } else {
